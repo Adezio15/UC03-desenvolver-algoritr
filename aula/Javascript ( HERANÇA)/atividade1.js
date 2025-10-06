@@ -45,46 +45,48 @@ export class Funcionario extends Pessoa{
             return this.#matricula
             }
         calculohoraextra(){
-            let horaextra = Number ("digite a quantidade de hora extra:")
-            this.horaextra =horaextra * 15
-            let salarioextra=salarioextra+horaextra
+            let horaextra = Number(prompt ("digite a quantidade de hora extra:"))
+            horaextra =horaextra * 15
+            let salarioextra= this.#salario + horaextra
             console.log('valor do Salario + hora extras:', salarioextra)
         }
     } export class Gerente extends Funcionario{
-    constructor(setor, quantidadeequipe){
-        super(salario,matricula,cargo)
+    constructor(nome, cpf, datanascimento, salario,matricula,cargo, setor, quantidadeequipe){
+        super(nome, cpf, datanascimento, cargo, salario, matricula)
     this.setor=setor
     this.quantidadeequipe=quantidadeequipe
     }
     calculobonificação(){
     let bonus
-if ( this.quantidadeequipe >= 10){
+    if ( this.quantidadeequipe >= 10){
     bonus = this.salario * 0.15
-console.log ('seu bonus é de:', bonus)
+    console.log ('seu bonus é de:', bonus)
 
-}else { bonus=this.salario*0.7
+}else{bonus=this.salario*0.7
     console.log('seu bonus é de :', bonus)
     }
     }
     }
 export class Diretor extends Funcionario{
 #participacaolucros
-constructor(participacaolucros, departamento, tempodirecao, cargo, salario, matricula ){
-    super(cargo, salario, matricula)
+constructor(nome, cpf, datanascimento, cargo, salario, matricula, participacaolucros, departamento, tempodirecao){
+super(nome, cpf, datanascimento, cargo, salario,matricula)
 this.#participacaolucros = participacaolucros
 this.departamento = departamento
 this.tempodirecao = tempodirecao
 }
-set participacaolucros (participacaolucros){ 
+    set participacaolucros (participacaolucros){ 
     this.#participacaolucros = participacaolucros
-    }    
+        }    
     get participacaolucros(){ 
     return this.#participacaolucros
-    }
+        }
 calculargratificacao(){
-let bonusgrat
-if (this.#participacaolucros == 'sim' && this.tempodirecao > 5){
+    let bonusgrat
+if (this.#participacaolucros == 'sim' && this.tempodirecao >= 5){
 bonusgrat = this.salario * 0.30
+console.log(bonusgrat)
+
 }if (this.tempodirecao < 5 && this.tempodirecao > 2 ){
     bonusgrat = this.salario * 0.25
 }if ( this.#participacaolucros < 2){
@@ -97,8 +99,11 @@ bonusgrat = this.salario * 0.30
 export class Dono extends Pessoa {
     #patrimonio
     #participacaoacionaria
-    constructor(patrimonio, participacaoacionaria, nome, cpf, datanascimento ){
+    invest = 0
+    constructor(nome, cpf, datanascimento, patrimonio, participacaoacionaria ){
         super(nome, cpf, datanascimento)
+        this.#patrimonio = patrimonio
+        this.#participacaoacionaria = participacaoacionaria
     }
 set patrimonio (patrimonio){ 
     this.#patrimonio = patrimonio
@@ -112,10 +117,11 @@ set patrimonio (patrimonio){
         get participacaoacionatia(){ 
         return this.#participacaoacionaria
     }
-    investir(valor){
-         valor = prompt ('Qual o valor que deseja investir? ')
+    investir(){
+         let valor = Number (prompt ('Qual o valor que deseja investir? '))
          if ( valor > 0){
-            console.log (" O valor investido é de :", valor)
+           this.invest = this.invest  + valor
+            console.log (" O valor investido é de :", this.invest)
          }else {
         console.log (" O Valor precisa ser maior que ")
          }
@@ -123,7 +129,9 @@ set patrimonio (patrimonio){
     retirarlucros (valor){
         valor = prompt ('Qual o valor que deseja retirar? ')
         if (valor > 0){
-            console.log (" O valor retirado é de :", valor)
+            this.invest = this.invest - valor
+            
+            console.log (" O valor retirado é de :", this.invest)
         }
         }
 }
